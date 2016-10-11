@@ -3,7 +3,7 @@
 #include <Constants.au3>
 #include <WinAPI.au3>
 
-Global $debug = True
+Global $debug = False
 $keepRunning = True
 
 While $keepRunning
