@@ -3,8 +3,20 @@
 #include <Constants.au3>
 #include <WinAPI.au3>
 
+Global $debug = True
+$keepRunning = True
 
-restartSteamVr()
+While $keepRunning
+   $clickedOn = MsgBox($MB_YESNO, "restart steam VR", "click yes to restart, no to end this", 0)
+   if $clickedOn == $IDYES Then
+	  restartSteamVr()
+   ElseIf $clickedOn == $IDNO Then
+	  $keepRunning = False
+   EndIf
+WEnd
+
+;MsgBox($MB_SYSTEMMODAL, "", "END")
+
 
 Func restartSteamVr()
    ; Wait 1 seconds for the Notepad window to appear.
@@ -16,9 +28,18 @@ Func restartSteamVr()
    WinActivate($hWnd)
    Sleep(1000)
    WinSetState($hWnd, "", @SW_MAXIMIZE)
+   $aClientSize = WinGetClientSize($hWnd)
+   ;1920
    ;1795x20
-   MouseClick($MOUSE_CLICK_LEFT, 1795, 20, 1)
-   Sleep(20000)
-   MouseClick($MOUSE_CLICK_LEFT, 1795, 20, 1)
+   $vrIconPositionX =  $aClientSize[0] - 125
+   $vrIconPositionY = 20
 
+   if $debug Then
+	  MsgBox($MB_SYSTEMMODAL, "", $aClientSize[0] & "x" & $aClientSize[1] & "|" & $vrIconPositionX & "x" & $vrIconPositionY)
+	  MouseMove($vrIconPositionX, $vrIconPositionY, 10)
+   Else
+	  MouseClick($MOUSE_CLICK_LEFT, $vrIconPositionX, $vrIconPositionY, 1)
+	  Sleep(15000)
+	  MouseClick($MOUSE_CLICK_LEFT, $vrIconPositionX, $vrIconPositionY, 1)
+   EndIf
  EndFunc
